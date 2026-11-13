@@ -22,6 +22,7 @@ const { createSafeIpc } = require('./services/safeIpc.cjs');
 const { createEditCommandService } = require('./services/editCommandService.cjs');
 const { createSpellcheckService } = require('./services/spellcheckService.cjs');
 const { createLanguageService } = require('./services/languageService.cjs');
+const { createZoomService } = require('./services/zoomService.cjs');
 
 // System log (%APPDATA%/yanote/logs/yanote.log): every layer reports its failures here
 const logService = configureSharedLog({ dir: app.getPath('logs') });
@@ -68,6 +69,7 @@ const configFilePath = path.join(dataDir, 'app-config.json');
 const defaultNotesPath = path.join(dataDir, 'notes');
 let appConfig = loadConfig(configFilePath, defaultNotesPath);
 const languageService = createLanguageService({ getPreference: () => appConfig.language, getSystemLanguages: () => app.getPreferredSystemLanguages() });
+const zoomService = createZoomService({ getSavedFactor: () => appConfig.zoomFactor, saveFactor: (zoomFactor) => updateConfig({ zoomFactor }) });
 
 function updateConfig(newConfig) {
   appConfig = saveConfig(configFilePath, appConfig, newConfig);
@@ -110,6 +112,7 @@ function createWindow() {
 
   isAlwaysOnTop = appConfig.alwaysOnTop || false;
   spellcheckService.attach(mainWindow.webContents, process.platform, languageService.info().language);
+  zoomService.attach(mainWindow.webContents);
 
   const isDev = process.env.NODE_ENV === 'development' || !app.isPackaged;
 
@@ -346,6 +349,8 @@ ipc.handle('fs:getAppConfig', () => {
   return appConfig;
 });
 ipc.handle('app:getLocaleInfo', () => languageService.info());
+ipc.handle('window:getZoomFactor', (event) => zoomService.get(event.sender));
+ipc.handle('window:zoom', (event, action) => zoomService.change(event.sender, action));
 
 ipc.handle('fs:saveAppConfig', (_, config) => {
   return updateConfig(config);

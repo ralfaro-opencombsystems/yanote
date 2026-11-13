@@ -12,6 +12,8 @@ export interface AppConfig {
   darkMode?: boolean;
   /** Window opacity 0.3–1 */
   opacity?: number;
+  /** Interface scale; 1 is 100%. */
+  zoomFactor?: number;
   /** Notes left open last time; they reopen on the next start */
   openTabs?: SavedTab[];
   activeTabPath?: string | null;
@@ -171,6 +173,9 @@ export type TermEvent =
 
 export interface ElectronAPI {
   getLocaleInfo?: () => Promise<import('../lib/i18n').LocaleInfo>;
+  getZoomFactor?: () => Promise<number>;
+  zoom?: (action: 'in' | 'out' | 'reset') => Promise<number>;
+  onZoomChanged?: (callback: (factor: number) => void) => () => void;
   // Window controls
   minimize: () => Promise<void>;
   maximize: () => Promise<boolean>;

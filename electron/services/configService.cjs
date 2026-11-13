@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeLanguage } = require('./languageService.cjs');
+const { normalizeZoom } = require('./zoomService.cjs');
 const { getLogger } = require('./logService.cjs');
 
 const log = getLogger('configService');
@@ -120,6 +121,7 @@ function loadConfig(configFilePath, defaultNotesPath) {
       return {
         notesPath: parsed.notesPath || defaultNotesPath,
         language: normalizeLanguage(parsed.language),
+        zoomFactor: normalizeZoom(parsed.zoomFactor),
         alwaysOnTop: Boolean(parsed.alwaysOnTop),
         notifyClaude: parsed.notifyClaude !== false,
         ideas: sanitizeIdeas(parsed.ideas),
@@ -141,6 +143,7 @@ function loadConfig(configFilePath, defaultNotesPath) {
   return {
     notesPath: defaultNotesPath,
     language: 'auto',
+    zoomFactor: 1,
     alwaysOnTop: false,
     notifyClaude: true,
     ideas: [],
@@ -162,6 +165,7 @@ function saveConfig(configFilePath, currentConfig, newConfig) {
     }
     const merged = { ...currentConfig, ...newConfig };
     merged.language = normalizeLanguage(merged.language);
+    merged.zoomFactor = normalizeZoom(merged.zoomFactor);
     if (merged.opacity !== undefined) merged.opacity = clampOpacity(merged.opacity);
     if (merged.recentFiles !== undefined) merged.recentFiles = sanitizeRecentFiles(merged.recentFiles);
     if (merged.openTabs !== undefined) merged.openTabs = sanitizeOpenTabs(merged.openTabs);

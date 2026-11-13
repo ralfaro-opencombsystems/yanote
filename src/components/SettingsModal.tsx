@@ -6,6 +6,7 @@ import { Button } from './ui/Button';
 import type { AppConfig } from '../types/electron';
 import { logError } from '../lib/logger';
 import { LoadingSkeleton } from './ui/Skeleton';
+import { ZoomControls } from './ZoomControls';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -185,6 +186,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               {t("🔔 Avisarme en Windows cuando Claude termine o necesite mi respuesta")}</span>
           </label>
         </fieldset>}
+
+        <ZoomControls />
 
         {/* Section: Version & updates */}
         {aboutLoading && !version && <LoadingSkeleton label={t("Cargando versión y actualizaciones")} className="p-3" />}

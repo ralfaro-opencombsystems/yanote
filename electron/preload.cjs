@@ -8,6 +8,13 @@ contextBridge.exposeInMainWorld('electronAPI', {
   isMaximized: () => ipcRenderer.invoke('window:isMaximized'),
   setAlwaysOnTop: (alwaysOnTop) => ipcRenderer.invoke('window:setAlwaysOnTop', alwaysOnTop),
   getAlwaysOnTop: () => ipcRenderer.invoke('window:getAlwaysOnTop'),
+  getZoomFactor: () => ipcRenderer.invoke('window:getZoomFactor'),
+  zoom: (action) => ipcRenderer.invoke('window:zoom', action),
+  onZoomChanged: (callback) => {
+    const listener = (_event, factor) => callback(factor);
+    ipcRenderer.on('window:zoomChanged', listener);
+    return () => ipcRenderer.removeListener('window:zoomChanged', listener);
+  },
   setOpacity: (opacity) => ipcRenderer.invoke('window:setOpacity', opacity),
 
   // File system

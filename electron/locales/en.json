@@ -454,5 +454,15 @@
   "Cuenta sin cuota disponible": "Account has no quota available",
   "Cargando uso de {0}": "Loading usage for {0}",
   "Límite alcanzado": "Limit reached",
-  "Cuota de suscripción no disponible": "Subscription quota unavailable"
+  "Cuota de suscripción no disponible": "Subscription quota unavailable",
+  "Zoom de la interfaz": "Interface zoom",
+  "Porcentaje de zoom": "Zoom percentage",
+  "Cargando zoom": "Loading zoom",
+  "Acercar (Ctrl + +)": "Zoom in (Ctrl + +)",
+  "Alejar (Ctrl + -)": "Zoom out (Ctrl + -)",
+  "Restablecer zoom (Ctrl + 0)": "Reset zoom (Ctrl + 0)",
+  "Restablecer (100%)": "Reset (100%)",
+  "No se pudo consultar el zoom": "Could not read the zoom level",
+  "No se pudo cambiar el zoom": "Could not change the zoom level",
+  "Zoom no disponible": "Zoom unavailable"
 }
